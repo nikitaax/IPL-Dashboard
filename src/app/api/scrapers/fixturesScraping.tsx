@@ -1,3 +1,4 @@
+import { Match } from "../../types/Match";
 import puppeteer from "puppeteer";
 
 const USER_AGENTS = [
@@ -23,9 +24,9 @@ export async function scrapeFixtures() {
         .split("\n")
         .filter((line) => line.trim());
       const keys = ["match_number", "venue", "date", "time", "team1", "team2"];
-      const data = Object.fromEntries(
+      const data: Match = Object.fromEntries(
         keys.map((key, i) => [key, textLines[i]])
-      );
+      ) as unknown as Match;
 
       data[
         "team1_logo"
@@ -34,9 +35,9 @@ export async function scrapeFixtures() {
         "team2_logo"
       ] = `https://scores.iplt20.com/ipl/teamlogos/${data.team2}.png`;
 
-      data["live_match"] = Boolean(
-        fixture.querySelectorAll("div.livematchIcon").length > 0
-      );
+      // Assign a boolean value to live_match
+      data["live_match"] =
+        fixture.querySelectorAll("div.livematchIcon").length > 0;
 
       if (data["live_match"]) {
         const teamElements = Array.from(

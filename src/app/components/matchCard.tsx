@@ -22,7 +22,9 @@ export default async function MatchCard() {
         <div key={index} className="p-4 border bg-white rounded-lg shadow-md">
           <p
             className={
-              match.live ? "font-bold text-red-600 animate-bounce" : "hidden"
+              match.live_match
+                ? "font-bold text-red-600 animate-bounce"
+                : "hidden"
             }
           >
             LIVE

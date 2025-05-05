@@ -24,12 +24,14 @@ export default async function MatchDetails() {
           <div
             key={index}
             className={`p-4 border flex flex-col rounded-lg shadow-md ${
-              match.live ? "bg-sky-100" : "bg-white"
+              match.live_match ? "bg-sky-100" : "bg-white"
             }`}
           >
             <p
               className={
-                match.live ? "font-bold text-red-600 animate-bounce" : "hidden"
+                match.live_match
+                  ? "font-bold text-red-600 animate-bounce"
+                  : "hidden"
               }
             >
               LIVE
