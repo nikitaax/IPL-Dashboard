@@ -1,4 +1,5 @@
 import puppeteer from "puppeteer";
+import chromium from "@sparticuz/chromium";
 
 const USER_AGENTS = [
   "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
@@ -10,6 +11,10 @@ export async function scrapeTable() {
   const browser = await puppeteer.launch({
     headless: true,
     args: ["--no-sandbox", "--disable-setuid-sandbox"],
+    executablePath:
+      process.env.NODE_ENV === "development"
+        ? puppeteer.executablePath()
+        : await chromium.executablePath(),
   });
 
   const page = await browser.newPage();

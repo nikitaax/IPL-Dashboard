@@ -48,7 +48,21 @@ export default async function PointsTable() {
                 <td className=" p-2 hidden md:table-cell">{team.against}</td>
                 <td className=" p-2 font-bold text-sky-700">{team.points}</td>
                 <td className=" p-2 font-bold hidden md:table-cell">
-                  {team.recent.replace(/\n/g, " ")}
+                  {team.recent.split("").map((char, index) => (
+                    <span
+                      key={index}
+                      className={
+                        char === "W"
+                          ? "text-green-500"
+                          : char === "L"
+                          ? "text-red-500"
+                          : ""
+                      }
+                    >
+                      {char}
+                      <span className="text-gray-400"> </span> {}
+                    </span>
+                  ))}
                 </td>
               </tr>
             ))}

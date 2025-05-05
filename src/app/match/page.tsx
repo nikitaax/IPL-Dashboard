@@ -24,7 +24,7 @@ export default async function MatchDetails() {
           <div
             key={index}
             className={`p-4 border flex flex-col rounded-lg shadow-md ${
-              match.live_match ? "bg-sky-100" : "bg-black"
+              match.live_match ? "bg-sky-100 text-black" : "bg-black text-white"
             }`}
           >
             <p
@@ -41,10 +41,10 @@ export default async function MatchDetails() {
             >
               {match.status ? match.status.toLocaleUpperCase() : ""}
             </p>
-            <p className="text-sm text-orange-500">
+            <p className=" text-orange-500 py-2">
               {match.date} | {match.time}
             </p>
-            <div className="grid grid-cols-2 gap-4 text-white">
+            <div className="grid grid-cols-2 gap-4 ">
               <div className="flex items-center gap-2 font-bold ">
                 {match.team1_logo ? (
                   <Image
@@ -62,7 +62,7 @@ export default async function MatchDetails() {
               <div className={match?.team1_status ? "justify-between  " : ""}>
                 {match.team1_status}
               </div>
-              <div className="flex items-center gap-2 font-bold text-white">
+              <div className="flex items-center gap-2 font-bold ">
                 {match.team2_logo ? (
                   <Image
                     src={match.team2_logo}
@@ -80,7 +80,10 @@ export default async function MatchDetails() {
               </div>
             </div>
 
-            <p className="text-sm text-white"> {match.venue}</p>
+            <p className=" text-blue-700 font-bold py-2 font-mono">
+              {" "}
+              {match.venue}
+            </p>
           </div>
         ))}
       </div>
