@@ -4,7 +4,7 @@ import fetchData from "../services/FetchData";
 
 export default async function MatchDetails() {
   const data = await fetchData();
-  if (!data || data.length === 0) {
+  if (!data || !Array.isArray(data.fixtures) || data.fixtures.length === 0) {
     return (
       <div className="p-4 border bg-white rounded-lg shadow-md text-center">
         <p className="text-lg font-bold text-gray-700">No Upcoming Matches</p>
@@ -24,7 +24,7 @@ export default async function MatchDetails() {
           <div
             key={index}
             className={`p-4 border flex flex-col rounded-lg shadow-md ${
-              match.live_match ? "bg-sky-100" : "bg-white"
+              match.live_match ? "bg-sky-100" : "bg-black"
             }`}
           >
             <p
@@ -41,11 +41,11 @@ export default async function MatchDetails() {
             >
               {match.status ? match.status.toLocaleUpperCase() : ""}
             </p>
-            <p className="text-sm text-gray-500">
+            <p className="text-sm text-orange-500">
               {match.date} | {match.time}
             </p>
-            <div className="grid grid-cols-2 gap-4">
-              <div className="flex items-center gap-2">
+            <div className="grid grid-cols-2 gap-4 text-white">
+              <div className="flex items-center gap-2 font-bold ">
                 {match.team1_logo ? (
                   <Image
                     src={match.team1_logo}
@@ -62,7 +62,7 @@ export default async function MatchDetails() {
               <div className={match?.team1_status ? "justify-between  " : ""}>
                 {match.team1_status}
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 font-bold text-white">
                 {match.team2_logo ? (
                   <Image
                     src={match.team2_logo}
@@ -75,13 +75,12 @@ export default async function MatchDetails() {
                 )}{" "}
                 {match.team2}
               </div>
-
               <div className={match.team2_status ? "justify-right " : ""}>
                 {match.team2_status}
               </div>
             </div>
 
-            <p className="text-sm"> {match.venue}</p>
+            <p className="text-sm text-white"> {match.venue}</p>
           </div>
         ))}
       </div>

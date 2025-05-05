@@ -5,7 +5,7 @@ import fetchData from "../services/FetchData";
 export default async function MatchDetails() {
   const data = await fetchData();
 
-  if (!data || data.length === 0) {
+  if (!data || !Array.isArray(data.fixtures) || data.fixtures.length === 0) {
     return (
       <div className="p-4 border bg-white rounded-lg shadow-md text-center">
         <p className="text-lg font-bold text-gray-700">No Upcoming Matches</p>
