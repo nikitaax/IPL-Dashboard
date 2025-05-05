@@ -1,6 +1,7 @@
 export default async function fetchData() {
   try {
-    const res = await fetch("http://localhost:3000/api/fixtures");
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+    const res = await fetch(`${apiUrl}/api/fixtures`);
     if (!res.ok) throw new Error("Failed to fetch fixtures");
     const data = await res.json();
     return data;
