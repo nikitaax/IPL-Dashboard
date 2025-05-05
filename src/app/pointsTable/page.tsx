@@ -4,7 +4,7 @@ import fetchPoints from "../services/fetchPoints";
 
 export default async function PointsTable() {
   const data = await fetchPoints();
-  if (!data || data.length === 0) {
+  if (!data || !Array.isArray(data.table) || data.table.length === 0) {
     return <div className="text-center">No data available</div>;
   }
   return (

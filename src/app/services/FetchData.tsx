@@ -4,7 +4,7 @@ export default async function fetchData() {
     const res = await fetch(`${apiUrl}/api/fixtures`);
     if (!res.ok) throw new Error("Failed to fetch fixtures");
     const data = await res.json();
-    return data;
+    return data || { fixtures: [] };
   } catch (error) {
     console.error("Error fetching fixtures:", error);
     return { fixtures: [] };
