@@ -34,55 +34,96 @@ export async function scrapeFixtures() {
   });
   await page.waitForSelector("span.versus");
 
-  const fixtures = await page.$$eval("#team_archive li", (elements) => {
-    return elements.map((fixture) => {
-      const textLines = fixture.innerText
-        .replace("Match Centre", "")
-        .split("\n")
-        .filter((line) => line.trim());
-      const keys = ["match_number", "venue", "date", "time", "team1", "team2"];
-      const data: Match = Object.fromEntries(
-        keys.map((key, i) => [key, textLines[i]])
-      ) as unknown as Match;
+  const TEAM_LOGO_MAP = {
+    "Chennai Super Kings": "CSK",
+    "Mumbai Indians": "MI",
+    "Royal Challengers Bengaluru": "RCB",
+    "Kolkata Knight Riders": "KKR",
+    "Delhi Capitals": "DC",
+    "Rajasthan Royals": "RR",
+    "Sunrisers Hyderabad": "SRH",
+    "Punjab Kings": "PBKS",
+    "Lucknow Super Giants": "LSG",
+    "Gujarat Titans": "GT",
+    TBD: "TBD",
+  };
 
-      data[
-        "team1_logo"
-      ] = `https://scores.iplt20.com/ipl/teamlogos/${data.team1}.png`;
-      data[
-        "team2_logo"
-      ] = `https://scores.iplt20.com/ipl/teamlogos/${data.team2}.png`;
+  const TBD_IMAGE_URL = "https://scores.iplt20.com/ipl/teamlogos/TBD.png";
 
-      // Assign a boolean value to live_match
-      data["live_match"] =
-        fixture.querySelectorAll("div.livematchIcon").length > 0;
+  const fixtures = await page.$$eval(
+    "#team_archive li",
+    (
+      elements,
+      TEAM_LOGO_MAP: Record<string, string>,
+      TBD_IMAGE_URL: string
+    ) => {
+      return Array.from(elements).map((fixture) => {
+        const textLines = fixture.innerText
+          .replace("Match Centre", "")
+          .split("\n")
+          .filter((line) => line.trim());
+        const keys = [
+          "match_number",
+          "venue",
+          "date",
+          "time",
+          "team1",
+          "team2",
+        ];
+        const data: Match = Object.fromEntries(
+          keys.map((key, i) => [key, textLines[i]])
+        ) as unknown as Match;
 
-      if (data["live_match"]) {
-        const teamElements = Array.from(
-          fixture.querySelectorAll(".vn-shedTeam")
-        );
+        const team1Key = data.team1 ? data.team1.trim() : "";
+        const team2Key = data.team2 ? data.team2.trim() : "";
 
-        // Find team1 status
-        const team1Element = teamElements.find((el) =>
-          el.textContent?.includes(data.team1)
-        );
-        data["team1_status"] =
-          team1Element?.textContent?.replace(data.team1, "").trim() || "";
+        data["team1_logo"] =
+          team1Key === "TBD"
+            ? TBD_IMAGE_URL
+            : TEAM_LOGO_MAP[team1Key]
+            ? `https://scores.iplt20.com/ipl/teamlogos/${TEAM_LOGO_MAP[team1Key]}.png`
+            : `https://scores.iplt20.com/ipl/teamlogos/${team1Key}.png`;
 
-        // Find team2 status
-        const team2Element = teamElements.find((el) =>
-          el.textContent?.includes(data.team2)
-        );
-        data["team2_status"] =
-          team2Element?.textContent?.replace(data.team2, "").trim() || "";
+        data["team2_logo"] =
+          team2Key === "TBD"
+            ? TBD_IMAGE_URL
+            : TEAM_LOGO_MAP[team2Key]
+            ? `https://scores.iplt20.com/ipl/teamlogos/${TEAM_LOGO_MAP[team2Key]}.png`
+            : `https://scores.iplt20.com/ipl/teamlogos/${team2Key}.png`;
+        // Assign a boolean value to live_match
+        data["live_match"] =
+          fixture.querySelectorAll("div.livematchIcon").length > 0;
 
-        // Match status
-        data["status"] =
-          fixture.querySelector("div.vn-ticketTitle")?.textContent?.trim() ||
-          "";
-      }
-      return data;
-    });
-  });
+        if (data["live_match"]) {
+          const teamElements = Array.from(
+            fixture.querySelectorAll(".vn-shedTeam")
+          );
+
+          // Find team1 status
+          const team1Element = teamElements.find((el) =>
+            el.textContent?.includes(data.team1)
+          );
+          data["team1_status"] =
+            team1Element?.textContent?.replace(data.team1, "").trim() || "";
+
+          // Find team2 status
+          const team2Element = teamElements.find((el) =>
+            el.textContent?.includes(data.team2)
+          );
+          data["team2_status"] =
+            team2Element?.textContent?.replace(data.team2, "").trim() || "";
+
+          // Match status
+          data["status"] =
+            fixture.querySelector("div.vn-ticketTitle")?.textContent?.trim() ||
+            "";
+        }
+        return data;
+      });
+    },
+    TEAM_LOGO_MAP,
+    TBD_IMAGE_URL
+  );
 
   await browser.close();
   return fixtures;
