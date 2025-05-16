@@ -13,10 +13,7 @@ export async function scrapeFixtures() {
     args: chromium.args,
     defaultViewport: chromium.defaultViewport,
     headless: chromium.headless,
-    executablePath:
-      process.env.NODE_ENV === "development"
-        ? puppeteer.executablePath()
-        : await chromium.executablePath(),
+    executablePath: await chromium.executablePath(),
   });
 
   const page = await browser.newPage();
