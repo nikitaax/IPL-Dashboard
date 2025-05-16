@@ -1,7 +1,18 @@
 import MatchCard from "./components/matchCard";
 import ImageSlider from "./components/imageSlider";
+import { initializeStore } from "./store";
+import ReduxProvider from "./reduxProvider";
+import { fetchFixtures } from "./services/FetchData";
 
-export default function Home() {
+export default async function Home() {
+  const store = initializeStore();
+
+  // Dispatch the fetchFixtures thunk on the server
+  await store.dispatch(
+    fetchFixtures() as unknown as ReturnType<typeof fetchFixtures>
+  );
+  const preloadedState = store.getState();
+
   return (
     <div>
       <h1 className="text-4xl font-bold text-center mt-10 ">
@@ -17,7 +28,9 @@ export default function Home() {
       </p>
       <div className="flex flex-col md:flex-row">
         <ImageSlider />
-        <MatchCard />
+        <ReduxProvider preloadedState={preloadedState}>
+          <MatchCard />
+        </ReduxProvider>
       </div>
     </div>
   );

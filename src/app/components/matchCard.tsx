@@ -1,11 +1,18 @@
-import { Match } from "../types/Match";
-import fetchData from "../services/FetchData";
+"use client";
+
+import React from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "../store";
 import Image from "next/image";
+import { Match } from "../types/Match";
 
-export default async function MatchCard() {
-  const data = await fetchData();
+export default function MatchCard() {
+  // const data = await fetchData();
+  const { fixtures, status, error } = useSelector(
+    (state: RootState) => state.fixtures
+  );
 
-  if (!data || !Array.isArray(data.fixtures) || data.fixtures.length === 0) {
+  if (status === "loading") {
     return (
       <div className="p-4 border bg-white rounded-lg shadow-md text-center">
         <p className="text-lg font-bold text-gray-700">No Upcoming Matches</p>
@@ -13,12 +20,18 @@ export default async function MatchCard() {
     );
   }
 
+  if (status === "failed") {
+    <div className="p-4 border bg-white rounded-lg shadow-md text-center">
+      <p className="text-lg font-bold text-gray-700">Error: {error}</p>
+    </div>;
+  }
+
   return (
     <div className="grid gap-4 sm:grid-cols-1 p-10 flex flex-col md:grid-cols-1 lg:grid-cols-1">
       <h2 className="text-2xl font-bold text-center mb-6 ">
         <span className="bg-white/50 backdrop-blur-md">Upcoming Matches</span>
       </h2>
-      {data.fixtures.slice(0, 5).map((match: Match, index: number) => (
+      {fixtures.slice(0, 5).map((match: Match, index: number) => (
         <div key={index} className="p-4 border bg-white rounded-lg shadow-md">
           <p
             className={
