@@ -45,10 +45,11 @@ export async function scrapeFixtures() {
     "Punjab Kings": "PBKS",
     "Lucknow Super Giants": "LSG",
     "Gujarat Titans": "GT",
-    TBD: "TBD",
+    "TBD ": "TBD",
   };
 
-  const TBD_IMAGE_URL = "https://scores.iplt20.com/ipl/teamlogos/TBD.png";
+  const TBD_IMAGE_URL =
+    "https://scores.iplt20.com/ipl/images/default-team-logo.png";
 
   const fixtures = await page.$$eval(
     "#team_archive li",
@@ -82,14 +83,19 @@ export async function scrapeFixtures() {
             ? TBD_IMAGE_URL
             : TEAM_LOGO_MAP[team1Key]
             ? `https://scores.iplt20.com/ipl/teamlogos/${TEAM_LOGO_MAP[team1Key]}.png`
-            : `https://scores.iplt20.com/ipl/teamlogos/${team1Key}.png`;
+            : /^[A-Z]{2,4}$/.test(team1Key)
+            ? `https://scores.iplt20.com/ipl/teamlogos/${team1Key}.png`
+            : TBD_IMAGE_URL;
 
         data["team2_logo"] =
           team2Key === "TBD"
             ? TBD_IMAGE_URL
             : TEAM_LOGO_MAP[team2Key]
             ? `https://scores.iplt20.com/ipl/teamlogos/${TEAM_LOGO_MAP[team2Key]}.png`
-            : `https://scores.iplt20.com/ipl/teamlogos/${team2Key}.png`;
+            : /^[A-Z]{2,4}$/.test(team2Key)
+            ? `https://scores.iplt20.com/ipl/teamlogos/${team2Key}.png`
+            : TBD_IMAGE_URL;
+
         // Assign a boolean value to live_match
         data["live_match"] =
           fixture.querySelectorAll("div.livematchIcon").length > 0;
