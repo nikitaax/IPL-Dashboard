@@ -15,13 +15,17 @@ export async function scrapeTable() {
   const browser = await puppeteer.launch(
     isProd
       ? {
-          args: chromium.args,
+          args: [
+            ...chromium.args,
+            "--disable-gpu",
+            "--disable-software-rasterizer",
+          ],
           defaultViewport: chromium.defaultViewport,
           headless: chromium.headless,
           executablePath: await chromium.executablePath(),
         }
       : {
-          headless: true, // Use Puppeteer's default Chromium for local
+          headless: true,
         }
   );
 
