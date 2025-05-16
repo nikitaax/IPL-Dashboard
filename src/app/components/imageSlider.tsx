@@ -26,7 +26,11 @@ export default function ImageSlider() {
 
   return (
     <div className="relative  max-w-4xl mx-auto mt-10">
-      <h2 className="text-2xl font-bold text-center mb-6">Latest IPL Images</h2>
+      <h2 className="text-2xl font-bold text-center mb-6">
+        <span className="bg-gradient-to-r from-purple-400 via-pink-400 to-yellow-400 text-transparent bg-clip-text drop-shadow-lg">
+          Latest IPL Images
+        </span>
+      </h2>
       <div className="relative overflow-hidden rounded-lg">
         <div className="w-full relative">
           <Image

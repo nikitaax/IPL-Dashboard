@@ -28,9 +28,15 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <div className="bg-[url('/background.png')] bg-cover bg-center min-h-screen ">
-          <Navbar />
-          {children}
+        <div className="relative min-h-screen bg-[url('/background.png')] bg-cover bg-center">
+          {/* Vibrant gradient overlay with glassmorphism */}
+          <div className="absolute inset-0 bg-gradient-to-br from-yellow-200/60 via-pink-200/60 to-purple-200/60 backdrop-blur-xl z-0" />
+          {/* Optional: add a subtle white overlay for extra brightness */}
+          <div className="absolute inset-0 bg-white/20 z-0" />
+          <div className="relative z-10">
+            <Navbar />
+            {children}
+          </div>
         </div>
       </body>
     </html>

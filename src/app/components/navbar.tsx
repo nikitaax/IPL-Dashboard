@@ -12,19 +12,23 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="bg-sky-600 text-white px-4 py-3">
-      <div className="flex justify-between items-center">
-        <h1 className="cursor-pointer text-xl font-bold " onClick={handleClick}>
+    <nav className="relative z-20 bg-white/30 backdrop-blur-md shadow-lg rounded-b-2xl mx-2 mt-2">
+      <div className="flex justify-between items-center px-4 py-3">
+        <h1
+          className="cursor-pointer text-2xl font-extrabold bg-gradient-to-r from-purple-500 via-pink-500 to-yellow-400 text-transparent bg-clip-text drop-shadow"
+          onClick={handleClick}
+        >
           IPL Dashboard
         </h1>
 
         {/* Mobile Menu Button */}
         <button
-          className="md:hidden focus:outline-none"
+          className="md:hidden focus:outline-none transition-transform duration-200 hover:scale-110"
           onClick={() => setIsOpen(!isOpen)}
+          aria-label="Toggle menu"
         >
           <svg
-            className="w-6 h-6"
+            className="w-7 h-7 text-purple-600"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -39,24 +43,33 @@ export default function Navbar() {
         </button>
 
         {/* Desktop Navigation */}
-        <ul className="hidden md:flex space-x-6">
+        <ul className="hidden md:flex space-x-8 font-semibold">
           <li>
-            <Link href="/" className="hover:text-gray-300">
+            <Link href="/" className="hover:text-purple-600 transition-colors">
               Home
             </Link>
           </li>
           <li>
-            <Link href="/match" className="hover:text-gray-300">
+            <Link
+              href="/match"
+              className="hover:text-pink-500 transition-colors"
+            >
               Live or Upcoming Match
             </Link>
           </li>
           <li>
-            <Link href="/pointsTable" className="hover:text-gray-300">
+            <Link
+              href="/pointsTable"
+              className="hover:text-yellow-500 transition-colors"
+            >
               Points Table
             </Link>
           </li>
           <li>
-            <Link href="/schedule" className="hover:text-gray-300">
+            <Link
+              href="/schedule"
+              className="hover:text-purple-600 transition-colors"
+            >
               Schedule
             </Link>
           </li>
@@ -65,16 +78,21 @@ export default function Navbar() {
 
       {/* Mobile Menu */}
       {isOpen && (
-        <ul className="md:hidden mt-3 space-y-3">
+        <ul className="md:hidden mt-2 pb-3 px-4 space-y-3 bg-white/80 rounded-xl shadow backdrop-blur-md animate-fade-in-down">
           <li>
-            <Link href="#" className="block text-center hover:text-gray-300">
+            <Link
+              href="/"
+              className="block text-center font-semibold hover:text-purple-600 transition-colors"
+              onClick={() => setIsOpen(false)}
+            >
               Home
             </Link>
           </li>
           <li>
             <Link
               href="/match"
-              className="block text-center hover:text-gray-300"
+              className="block text-center font-semibold hover:text-pink-500 transition-colors"
+              onClick={() => setIsOpen(false)}
             >
               Live or Upcoming Match
             </Link>
@@ -82,7 +100,8 @@ export default function Navbar() {
           <li>
             <Link
               href="/pointsTable"
-              className="block text-center hover:text-gray-300"
+              className="block text-center font-semibold hover:text-yellow-500 transition-colors"
+              onClick={() => setIsOpen(false)}
             >
               Points Table
             </Link>
@@ -90,7 +109,8 @@ export default function Navbar() {
           <li>
             <Link
               href="/schedule"
-              className="block text-center hover:text-gray-300"
+              className="block text-center font-semibold hover:text-purple-600 transition-colors"
+              onClick={() => setIsOpen(false)}
             >
               Schedule
             </Link>

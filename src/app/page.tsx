@@ -3,6 +3,9 @@ import ImageSlider from "./components/imageSlider";
 import { initializeStore } from "./store";
 import ReduxProvider from "./reduxProvider";
 import { fetchFixtures } from "./services/FetchData";
+import { fetchPoints } from "./services/fetchPoints";
+
+import TopTeams from "./components/TopTeams";
 
 export default async function Home() {
   const store = initializeStore();
@@ -11,6 +14,11 @@ export default async function Home() {
   await store.dispatch(
     fetchFixtures() as unknown as ReturnType<typeof fetchFixtures>
   );
+
+  await store.dispatch(
+    fetchPoints() as unknown as ReturnType<typeof fetchPoints>
+  );
+
   const preloadedState = store.getState();
 
   return (
@@ -26,12 +34,19 @@ export default async function Home() {
       <p className="text-center mt-4">
         Check out the navigation bar to explore different sections.
       </p>
-      <div className="flex flex-col md:flex-row">
-        <ImageSlider />
-        <ReduxProvider preloadedState={preloadedState}>
-          <MatchCard />
-        </ReduxProvider>
-      </div>
+      <ReduxProvider preloadedState={preloadedState}>
+        <div className="grid grid-cols-1 md:grid-cols-3 md:grid-rows-2 gap-4">
+          <div className="md:row-span-2 md:col-span-1">
+            <MatchCard />
+          </div>
+          <div className="md:col-span-2 md:row-span-1">
+            <ImageSlider />
+          </div>
+          <div className="md:col-span-2 md:row-span-1">
+            <TopTeams />
+          </div>
+        </div>
+      </ReduxProvider>
     </div>
   );
 }
