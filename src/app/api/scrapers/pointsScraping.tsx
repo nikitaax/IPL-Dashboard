@@ -7,7 +7,9 @@ const USER_AGENTS = [
   "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.159 Safari/537.36",
 ];
 
-const isProd = process.env.AWS_LAMBDA_FUNCTION_VERSION || process.env.VERCEL;
+const isProd = !!(
+  process.env.AWS_LAMBDA_FUNCTION_VERSION || process.env.VERCEL
+);
 
 export async function scrapeTable() {
   const browser = await puppeteer.launch(
