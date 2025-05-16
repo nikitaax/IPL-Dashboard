@@ -45,7 +45,7 @@ export async function scrapeFixtures() {
     "Punjab Kings": "PBKS",
     "Lucknow Super Giants": "LSG",
     "Gujarat Titans": "GT",
-    "TBD ": "TBD",
+    TBD: "TBD",
   };
 
   const TBD_IMAGE_URL =
