@@ -22,7 +22,9 @@ export async function scrapeTable() {
   await page.setUserAgent(
     USER_AGENTS[Math.floor(Math.random() * USER_AGENTS.length)]
   );
-  await page.goto("https://www.iplt20.com/points-table/men");
+  await page.goto("https://www.iplt20.com/points-table/men", {
+    waitUntil: "networkidle0",
+  });
   await page.waitForSelector("tbody#pointsdata");
 
   const rows = await page.$$eval("tbody#pointsdata tr", (rowElements) => {

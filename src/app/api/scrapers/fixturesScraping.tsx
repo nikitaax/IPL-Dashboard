@@ -23,7 +23,9 @@ export async function scrapeFixtures() {
   await page.setUserAgent(
     USER_AGENTS[Math.floor(Math.random() * USER_AGENTS.length)]
   );
-  await page.goto("https://www.iplt20.com/matches/fixtures");
+  await page.goto("https://www.iplt20.com/matches/fixtures", {
+    waitUntil: "networkidle0",
+  });
   await page.waitForSelector("span.versus");
 
   const fixtures = await page.$$eval("#team_archive li", (elements) => {
