@@ -17,8 +17,9 @@ function getTimeUntil(dateStr: string, timeStr: string) {
     // Remove "IST" and trim
     const timeClean = timeStr.replace("IST", "").trim();
     // Parse to 24h format
-    const [time, period] = timeClean.split(" ");
-    let [hours, minutes] = time.split(":").map(Number);
+    const [timePart, period] = timeClean.split(" ");
+    const [hoursInit, minutes] = timePart.split(":").map(Number);
+    let hours = hoursInit;
     if (period.toLowerCase() === "pm" && hours !== 12) hours += 12;
     if (period.toLowerCase() === "am" && hours === 12) hours = 0;
 
@@ -39,7 +40,8 @@ function getTimeUntil(dateStr: string, timeStr: string) {
       Nov: "11",
       Dec: "12",
     };
-    const monthNum = monthMap[month.slice(0, 3)];
+    const monthKey = month.slice(0, 3) as keyof typeof monthMap;
+    const monthNum = monthMap[monthKey];
     const isoString = `${year}-${monthNum}-${day.padStart(2, "0")}T${hours
       .toString()
       .padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:00`;
