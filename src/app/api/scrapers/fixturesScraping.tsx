@@ -10,8 +10,9 @@ const USER_AGENTS = [
 
 export async function scrapeFixtures() {
   const browser = await puppeteer.launch({
-    headless: true,
-    args: ["--no-sandbox", "--disable-setuid-sandbox"],
+    args: chromium.args,
+    defaultViewport: chromium.defaultViewport,
+    headless: chromium.headless,
     executablePath:
       process.env.NODE_ENV === "development"
         ? puppeteer.executablePath()

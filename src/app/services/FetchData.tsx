@@ -1,7 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-// src/features/fixtures/fixturesSlice.ts
-
 const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
 
 // Async thunk for fetching data
